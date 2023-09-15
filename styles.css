@@ -1,0 +1,30 @@
+.gameboard-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 60px);
+    grid-template-rows: repeat(3, 60px);
+}
+
+.gameTile {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gameTile:nth-child(3n + 1),
+.gameTile:nth-child(3n + 3){
+    border-right: 1px solid red;
+    border-left: 1px solid red;
+}
+
+.gameTile:nth-child(1),
+.gameTile:nth-child(2),
+.gameTile:nth-child(3),
+.gameTile:nth-child(7),
+.gameTile:nth-child(8),
+.gameTile:nth-child(9){
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
+ }
+
