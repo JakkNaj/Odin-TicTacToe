@@ -1,52 +1,78 @@
-
 const gameboard = (() => {
     let _board = new Array(9);
-    _board.fill('O');
-    let gTiles = document.querySelectorAll(".gameTile");
-    const _init = () => {
-        //ready the gameboard for play - add event listeners to gameTiles etc.
-        for (let tile of gTiles) {
-            tile.addEventListener("click", function(){
-                if (gameController.playerOnTurn){
-                    this.textContent = 'X';
-                    gameController.playerOnTurn = false;
-                } else {
-                    this.textContent = 'E';
-                    gameController.playerOnTurn = true;
-                }
-            })
-        }
+    //_board.fill('O');
+    const setField = (index, sign) => {
+        if (index > _board.length) return;
+        _board[index] = sign;
     }
-    const showGameBoard = () => {
-        let gb = document.querySelector(".gameboard-wrapper");
-        let index = 0;
-        for(let tile of gTiles){
-            tile.textContent = _board[index];
-            index++;
-        }
+    const getField = (index) => {
+        if (index > _board.length) return;
+        return _board[index];
     }
-
 
     return {
-        _board, showGameBoard, _init
+        getField, setField
     }
 })()
 
-const Player = (name, health) => {
-    return {name, health};
+const Player = (sign) => {
+    let _sign = sign;
+    const getSign = () => _sign;
+    const setSign = (sign) => {
+        _sign = sign;
+        //todo
+    }
+
+    return {
+        getSign, setSign
+    };
 }
 
 const gameController = (() => {
-    const player = Player("Jakub");
-    const enemy = Player("Marek");
-    const gamePlaying = true;
-    let playerOnTurn = true;
-    const _start = () => {
-        gameboard._init();
-        gameboard.showGameBoard();
+    const playerOne = Player("X");
+    const playerTwo = Player("O");
+    let round = 1;
+    let gamePlaying = true;
 
+    const playRound = (index) => {
+        gameboard.setField(index, getPlayerSign());
+        if (round === 9){
+            console.log("draw");
+            gamePlaying = false;
+        }
+        round++;
+    };
+
+    const getPlayerSign = ()=>{
+        return round % 2 === 1 ? playerOne.getSign() : playerTwo.getSign();
     }
-    return { player, enemy, _start, playerOnTurn }
+
+    const getGamePlaying = () => {
+        return gamePlaying;
+    }
+
+    return {
+        playRound, getGamePlaying
+    }
 })()
 
-gameController._start();
+const displayController = (() => {
+    let gTiles = document.querySelectorAll(".gameTile");
+
+    gTiles.forEach((tile) => {
+        tile.addEventListener("click", (e) => {
+            if (!gameController.getGamePlaying() || e.target.textContent !== "") return;
+            console.log(e.target.getAttribute("idx"));
+            gameController.playRound(parseInt(e.target.getAttribute("idx")));
+            updateGameboard();
+        })
+    })
+
+    const updateGameboard = () => {
+        for (let i = 0; i < gTiles.length; i++) {
+            gTiles[i].textContent = gameboard.getField(i);
+        }
+    };
+
+    return {}
+})()
