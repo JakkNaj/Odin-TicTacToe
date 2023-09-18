@@ -10,8 +10,12 @@ const gameboard = (() => {
         return _board[index];
     }
 
+    const resetBoard = () => {
+        _board = new Array(9);
+    }
+
     return {
-        getField, setField
+        getField, setField, resetBoard
     }
 })()
 
@@ -20,7 +24,6 @@ const Player = (sign) => {
     const getSign = () => _sign;
     const setSign = (sign) => {
         _sign = sign;
-        //todo
     }
 
     return {
@@ -47,6 +50,16 @@ const gameController = (() => {
         }
         round++;
     };
+
+    const resetGame = () => {
+        gamePlaying = true;
+        gameboard.resetBoard();
+    }
+
+    const setSigns = (sign1, sign2) => {
+        playerOne.setSign(sign1);
+        playerTwo.setSign(sign2);
+    }
 
     const getPlayerSign = ()=>{
         return round % 2 === 1 ? playerOne.getSign() : playerTwo.getSign();
@@ -81,12 +94,33 @@ const gameController = (() => {
     }
 
     return {
-        playRound, getGamePlaying
+        playRound, getGamePlaying, setSigns, resetGame
     }
 })()
 
 const displayController = (() => {
     let gTiles = document.querySelectorAll(".gameTile");
+    let startBtn = document.getElementById("start-game-btn");
+    let resetBtn = document.getElementById("reset-game-btn");
+
+    startBtn.addEventListener("click", () => {
+        let sign1 = document.getElementById("sign-1").value;
+        let sign2 = document.getElementById("sign-2").value;
+        gameController.setSigns(sign1, sign2);
+
+        let gbWrapper = document.querySelector(".gameboard-wrapper");
+        gbWrapper.style.display = "grid";
+        startBtn.style.display = "none";
+        resetBtn.style.display = "block";
+    })
+
+    resetBtn.addEventListener("click", () => {
+        let sign1 = document.getElementById("sign-1").value;
+        let sign2 = document.getElementById("sign-2").value;
+        gameController.setSigns(sign1, sign2);
+        gameController.resetGame();
+        updateGameboard();
+    })
 
     gTiles.forEach((tile) => {
         tile.addEventListener("click", (e) => {

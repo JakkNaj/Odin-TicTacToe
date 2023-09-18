@@ -9,11 +9,20 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
+    <div class="left-side">
         <h1>Tic Tac Toe</h1>
-    </header>
+        <form>
+            <label for="sign-1">Player One sign</label>
+            <input type="text" id="sign-1" placeholder="X" value="X">
+            <label for="sign-2">Player Two sign</label>
+            <input type="text" id="sign-2" placeholder="O" value="O">
+        </form>
+        <button id="start-game-btn">Start Game</button>
+        <button id="reset-game-btn" style="display: none">Reset Game</button>
+
+    </div>
     <main>
-        <div class="gameboard-wrapper">
+        <div class="gameboard-wrapper" style="display: none">
             <div class="gameTile" idx="0"></div>
             <div class="gameTile" idx="1"></div>
             <div class="gameTile" idx="2"></div>

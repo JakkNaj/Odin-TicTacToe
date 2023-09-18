@@ -1,4 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Roboto+Mono&display=swap');
+
+:root {
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+}
+
+.left-side >form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.left-side form>* {
+    margin-bottom: 10px;
+}
+
+.left-side form >input{
+    height: 20px;
+}
+
+#start-game-btn, #reset-game-btn {
+    padding: 10px 20px 10px;
+}
+
 .gameboard-wrapper {
+    padding-top: 80px;
     display: grid;
     grid-template-columns: repeat(3, 60px);
     grid-template-rows: repeat(3, 60px);
@@ -14,8 +45,8 @@
 
 .gameTile:nth-child(3n + 1),
 .gameTile:nth-child(3n + 3){
-    border-right: 1px solid red;
-    border-left: 1px solid red;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
 }
 
 .gameTile:nth-child(1),
@@ -24,7 +55,7 @@
 .gameTile:nth-child(7),
 .gameTile:nth-child(8),
 .gameTile:nth-child(9){
-    border-top: 1px solid red;
-    border-bottom: 1px solid red;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
  }
 
