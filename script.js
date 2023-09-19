@@ -36,24 +36,28 @@ const gameController = (() => {
     const playerTwo = Player("O");
     let round = 1;
     let gamePlaying = true;
+    let gameLog = "";
 
     const playRound = (index) => {
         gameboard.setField(index, getPlayerSign());
         if (round === 9){
-            console.log("draw");
+            gameLog = "It's a draw";
             gamePlaying = false;
         }
         if (checkWinCombinations(index)) {
             let playerSign = getPlayerSign();
-            console.log(`Player with sign: ${playerSign} wins!`);
+            gameLog = `Player with sign: ${playerSign} wins!`;
             gamePlaying = false;
+            return true;
         }
         round++;
+        return false;
     };
 
     const resetGame = () => {
         gamePlaying = true;
         gameboard.resetBoard();
+        displayController.resetLog();
     }
 
     const setSigns = (sign1, sign2) => {
@@ -63,6 +67,10 @@ const gameController = (() => {
 
     const getPlayerSign = ()=>{
         return round % 2 === 1 ? playerOne.getSign() : playerTwo.getSign();
+    }
+
+    const getGameLog = () => {
+        return gameLog;
     }
 
     const getGamePlaying = () => {
@@ -94,7 +102,7 @@ const gameController = (() => {
     }
 
     return {
-        playRound, getGamePlaying, setSigns, resetGame
+        playRound, getGamePlaying, setSigns, resetGame, getGameLog
     }
 })()
 
@@ -102,6 +110,7 @@ const displayController = (() => {
     let gTiles = document.querySelectorAll(".gameTile");
     let startBtn = document.getElementById("start-game-btn");
     let resetBtn = document.getElementById("reset-game-btn");
+    let gameLog = document.querySelector(".game-log")
 
     startBtn.addEventListener("click", () => {
         let sign1 = document.getElementById("sign-1").value;
@@ -125,7 +134,9 @@ const displayController = (() => {
     gTiles.forEach((tile) => {
         tile.addEventListener("click", (e) => {
             if (!gameController.getGamePlaying() || e.target.textContent !== "") return;
-            gameController.playRound(parseInt(e.target.getAttribute("idx")));
+                if( gameController.playRound(parseInt(e.target.getAttribute("idx")))){
+                    gameLog.textContent = gameController.getGameLog();
+                }
             updateGameboard();
         })
     })
@@ -136,5 +147,9 @@ const displayController = (() => {
         }
     };
 
-    return {}
+    const resetLog = () => {
+        gameLog.textContent = "";
+    }
+
+    return {resetLog}
 })()
